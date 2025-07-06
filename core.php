@@ -699,7 +699,7 @@ function footer()
     <div class="scroll-btn"><div class="scroll-btn-arrow"></div></div>
     <strong>&copy; <?php
     echo date("Y");
-?> Ray Daniel v<?php echo $psec_version; ?></strong>
+?> Ray Daniel<?php echo $psec_version; ?></strong>
 	
 </footer>
 

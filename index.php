@@ -26,116 +26,120 @@ $error = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="author" content="Antonov_WEB">
-		<meta name="generator" content="Project SECURITY" />
-		<meta name="robots" content="noindex, nofollow">
-        <title>Project SECURITY &rsaquo; Admin Panel</title>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Ray Daniel">
+    <meta name="generator" content="Project SECURITY" />
+    <meta name="robots" content="noindex, nofollow">
+    <title>Project SECURITY &rsaquo; Admin Panel</title>
 
-        <!-- CSS -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.7.1/css/all.css">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.7.1/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
 
-        <!-- Favicon -->
-        <link rel="shortcut icon" href="assets/img/favicon.png">
-    </head>
-
-    <body class="login-page <?php
-if ($settings['dark_mode'] == 1) {
-    echo 'dark-mode';
-}
-?>">
-	<div class="login-box">
-	    <form action="" method="post">
-
-		<div class="card card-outline card-primary">
-		<div class="card-header text-center">
-			<h1><i class="fab fa-get-pocket"></i> Project <b>SECURITY</b></h1>
-		</div>
-		<div class="card">
-           <div class="card-body text-white card-primary card-outline">
-<?php
-if (isset($_POST['signin'])) {
-    $ip = addslashes(htmlentities($_SERVER['REMOTE_ADDR']));
-	if ($ip == "::1") {
-		$ip = "127.0.0.1";
-	}
-	@$date = @date("d F Y");
-    @$time = @date("H:i");
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/img/favicon.png">
     
-    $username = mysqli_real_escape_string($mysqli, $_POST['username']);
-    $password = hash('sha256', $_POST['password']);
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            margin-top: 100px;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .login-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            border-radius: 5px;
+            padding: 10px 20px;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .alert-danger {
+            border-radius: 5px;
+        }
+        .remember-me {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body class="login-page">
+    <div class="container login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h1><b>Project</b>SECURITY</h1>
+            </div>
+            <?php
+            if (isset($_POST['signin'])) {
+                $ip = addslashes(htmlentities($_SERVER['REMOTE_ADDR']));
+                if ($ip == "::1") {
+                    $ip = "127.0.0.1";
+                }
+                @$date = @date("d F Y");
+                @$time = @date("H:i");
 
-    if ($username == $settings['username'] && $password == $settings['password']) {
-        
-        $checklh = $mysqli->query("SELECT id FROM `psec_logins` WHERE `username`='$username' AND ip='$ip' AND date='$date' AND time='$time' AND successful='1'");
-        if (mysqli_num_rows($checklh) == 0) {
-            $log = $mysqli->query("INSERT INTO `psec_logins` (username, ip, date, time, successful) VALUES ('$username', '$ip', '$date', '$time', '1')");
-        }
-        
-        $_SESSION['sec-username'] = $username;
-        
-        echo '<meta http-equiv="refresh" content="0;url=dashboard.php">';
-    } else {
-        $checklh = $mysqli->query("SELECT id FROM `psec_logins` WHERE `username`='$username' AND ip='$ip' AND date='$date' AND time='$time' AND successful='0'");
-        if (mysqli_num_rows($checklh) == 0) {
-            $log = $mysqli->query("INSERT INTO `psec_logins` (username, ip, date, time, successful) VALUES ('$username', '$ip', '$date', '$time', '0')");
-        }
-        
-        echo '
-		<div class="alert alert-danger">
-              <i class="fas fa-exclamation-circle"></i> The entered <strong>Username</strong> or <strong>Password</strong> is incorrect.
-        </div>';
-        $error = 1;
-    }
-}
-?> 
-			<div class="form-group has-feedback <?php
-if ($error == 1) {
-    echo 'has-danger';
-}
-?>">
-            <div class="input-group mb-3">
-				<input type="username" name="username" class="form-control <?php
-if ($error == 1) {
-    echo 'is-invalid';
-}
-?>" placeholder="Username" <?php
-if ($error == 1) {
-    echo 'autofocus';
-}
-?> required>
-                <div class="input-group-append">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-				</div>
-            </div>
-			</div>
-            <div class="form-group has-feedback">
-			    <div class="input-group mb-3">
+                $username = mysqli_real_escape_string($mysqli, $_POST['username']);
+                $password = hash('sha256', $_POST['password']);
+
+                if ($username == $settings['username'] && $password == $settings['password']) {
+
+                    $checklh = $mysqli->query("SELECT id FROM `psec_logins` WHERE `username`='$username' AND ip='$ip' AND date='$date' AND time='$time' AND successful='1'");
+                    if (mysqli_num_rows($checklh) == 0) {
+                        $log = $mysqli->query("INSERT INTO `psec_logins` (username, ip, date, time, successful) VALUES ('$username', '$ip', '$date', '$time', '1')");
+                    }
+
+                    $_SESSION['sec-username'] = $username;
+
+                    echo '<meta http-equiv="refresh" content="0;url=dashboard.php">';
+                } else {
+                    $checklh = $mysqli->query("SELECT id FROM `psec_logins` WHERE `username`='$username' AND ip='$ip' AND date='$date' AND time='$time' AND successful='0'");
+                    if (mysqli_num_rows($checklh) == 0) {
+                        $log = $mysqli->query("INSERT INTO `psec_logins` (username, ip, date, time, successful) VALUES ('$username', '$ip', '$date', '$time', '0')");
+                    }
+
+                    echo '
+                    <div class="alert alert-danger">
+                          <i class="fas fa-exclamation-circle"></i> The entered <strong>Username</strong> or <strong>Password</strong> is incorrect.
+                    </div>';
+                    $error = 1;
+                }
+            }
+            ?>
+            <form action="" method="post">
+                <input type="username" name="username" class="form-control" placeholder="Username" required>
                 <input type="password" name="password" class="form-control" placeholder="Password" required>
-				<div class="input-group-append">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-				</div>
-				</div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <!--<input type="checkbox" id="remember" name="remember" checked="">
-                    <label for="remember">Remember Me</label>-->
-                    <button type="submit" name="signin" class="btn btn-md btn-primary btn-block btn-flat"><i class="fas fa-sign-in-alt"></i>
-&nbsp;Sign In</button>
-                    <p class="mb-1">
-                        Ray Daniel
-                    </p>
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember Me</label>
                 </div>
-            </div>
-			</div>
-			</div>
-        </form> 
-		
-		</div>
-    </body>
+                <button type="submit" name="signin" class="btn btn-primary">Sign In</button>
+            </form>
+            <p class="mb-0 text-center">Ray Daniel</p>
+        </div>
+    </div>
+</body>
 </html>
