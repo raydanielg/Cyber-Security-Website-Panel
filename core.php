@@ -699,7 +699,7 @@ function footer()
     <div class="scroll-btn"><div class="scroll-btn-arrow"></div></div>
     <strong>&copy; <?php
     echo date("Y");
-?> <a href="https://codecanyon.net/item/project-security-website-security-antivirus-firewall/15487703?ref=Antonov_WEB" target="_blank">Project SECURITY</a> v<?php echo $psec_version; ?></strong>
+?> Ray Daniel v<?php echo $psec_version; ?></strong>
 	
 </footer>
 
